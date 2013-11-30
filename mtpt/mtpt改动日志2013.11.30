@@ -1,0 +1,5 @@
+改动日志：
+1.include文件夹添加了smarty模板文件夹，smarty版本3.1.13
+2.根目录添加了templates文件夹，用于存放模板，默认模板为default
+3.修改了include/bittorrent.php，第13行开始添加了smarty设置及默认模板
+
