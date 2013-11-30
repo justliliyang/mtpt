@@ -30,6 +30,6 @@ $smarty->right_delimiter=" %}";
 /*设置编译号id*/
 $smarty->compile_id="1.0.1";
 /*强制编译，仅在网站开发时方便实时更新使用*/
-//smarty->force_compile=true;
+smarty->force_compile=true;
 include($rootpath . 'include/core.php');
 include_once($rootpath . 'include/functions.php');
