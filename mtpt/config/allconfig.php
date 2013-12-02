@@ -148,8 +148,8 @@ $BASIC=array(	'SITENAME' => '麦田 PT',
 	'BASEURL' => 'localhost/mtpt',
 	'announce_url' => 'localhost/mtpt',
 	'mysql_host' => 'localhost',
-	'mysql_user' => 'test',
-	'mysql_pass' => 'test',
+	'mysql_user' => 'mtpt',
+	'mysql_pass' => 'mtpt',
 	'mysql_db' => 'mtpt',
 );
 $BONUS=array(	'donortimes' => '2',
