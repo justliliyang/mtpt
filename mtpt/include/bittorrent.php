@@ -16,7 +16,7 @@ define('MTPTTEMPLATES',"default");
 require_once($rootpath."/include/smarty/libs/Smarty.class.php");
 $smarty=new Smarty();
 /*指定模板文件的路径*/
-$smarty->template_dir=$rootpath."/templates/default";
+$smarty->template_dir=$rootpath."/templates";
 /*指定编译的文件路径*/
 $smarty->compile_dir=$rootpath."/data/templates_compile";
 /*不使用缓存*/
@@ -30,6 +30,6 @@ $smarty->right_delimiter=" %}";
 /*设置编译号id*/
 $smarty->compile_id="1.0.1";
 /*强制编译，仅在网站开发时方便实时更新使用*/
-smarty->force_compile=true;
+$smarty->force_compile=true;
 include($rootpath . 'include/core.php');
 include_once($rootpath . 'include/functions.php');
