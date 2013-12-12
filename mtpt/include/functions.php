@@ -64,18 +64,6 @@ function get_single_value($table, $field, $suffix = ""){
 	}
 }
 
-function stdmsg($heading, $text, $htmlstrip = false)
-{
-	if ($htmlstrip) {
-		$heading = htmlspecialchars(trim($heading));
-		$text = htmlspecialchars(trim($text));
-	}
-	print("<table align=\"center\" class=\"main\" width=\"500\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n");
-	if ($heading)
-	print("<h2>".$heading."</h2>\n");
-	print("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
-	print($text . "</td></tr></table></td></tr></table>\n");
-}
 
 function stderr($heading, $text, $htmlstrip = true, $head = true, $foot = true, $die = true)
 {

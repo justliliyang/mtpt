@@ -1,6 +1,8 @@
 <?php
 require "include/bittorrent.php";
 require "./memcache.php";
+stdmsg("sss", "ss");
+exit;
 dbconn(true);
 require_once(get_langfile_path());
 loggedinorreturn(true);

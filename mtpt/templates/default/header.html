@@ -24,38 +24,18 @@
 <link rel="stylesheet" href="{% $css_file %}{% $cssupdatedate %}" type="text/css" />
 {% /if %}
 <link rel="alternate" type="application/rss+xml" title="Latest Torrents" href="torrentrss.php" />
-<script type="text/javascript" src="curtain_imageresizer.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="ajaxbasic.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="common.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="domLib.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="domTT.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="domTT_drag.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="fadomatic.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="jquerylib/jquery-1.5.2.min.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="jquerylib/jquery.alerts.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="jquerylib/jquery.ui.draggable.js{% $cssupdatedate %}>"></script>
-<script type="text/javascript" src="jquerylib/jquery.caretInsert.js{% $cssupdatedate %}>"></script>
-<link rel="stylesheet" href="userAutoTips.css" type="text/css">
-<script type="text/javascript" src="userAutoTips.js"></script>
-</head>
-<body>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
-	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
-	t_ids = $('textarea');
-	if(t_ids)
-	{
-		for(var i = 0 ;i <t_ids.length;i++)
-		{
-			userAutoTips({id:t_ids[i].id});
-		}	
-	}
-	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
-	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
-});
-
-</script>
+<script type="text/javascript" src="curtain_imageresizer.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="ajaxbasic.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="common.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="domLib.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="domTT.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="domTT_drag.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="fadomatic.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="jquerylib/jquery-1.5.2.min.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="jquerylib/jquery.alerts.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="jquerylib/jquery.ui.draggable.js{% $cssupdatedate %}"></script>
+<script type="text/javascript" src="jquerylib/jquery.caretInsert.js{% $cssupdatedate %}"></script>
+<link rel="stylesheet" href="userAutoTips.css" type="text/css" />
 <style type="text/css">
 html body {
 _background-image:url(about:blank);
@@ -86,6 +66,27 @@ _background-attachment:fixed;
     _top:expression(eval(document.documentElement.scrollTop));
     }
 </style>
+<script type="text/javascript" src="userAutoTips.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
+	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
+	t_ids = $('textarea');
+	if(t_ids)
+	{
+		for(var i = 0 ;i<t_ids.length;i++)
+		{
+			userAutoTips({id:t_ids[i].id});
+		}	
+	}
+	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
+	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
+});
+</script>
+
+</head>
+<body>
+
 <div id="roll"><div title="回到顶部" id="roll_top"></div><div title="转到底部" id="roll_bottom"></div></div>
 <table class="head" cellspacing="0" cellpadding="0" align="center">
 	<tr>
@@ -113,4 +114,7 @@ _background-attachment:fixed;
 	<tr><td id="nav_block" class="text" align="center">
 {% if $cur_user eq "" %}
 <a href="login.php"><font class="big"><b>{% $lang_function.text_login %}</b></font></a>  ｜ <a href="signupcard.php"><font class="big"><b>{% $lang_function.text_signupcard %}</b></font></a> ｜ <a href="signup.php?type=invite"><font class="big"><b>{% $lang_function.text_invite_reg %}</b></font></a> ｜ <a href="signup.php"><font class="big"><b>{% $lang_function.text_signup %}</b></font></a>  ｜ <a href="invitebox.php"><font class="big"><b>邀请申请区</b></font></a>
+{% else %}
+<table class="main" width="100" border="0" cellspacing="0" cellpadding="0">
+	<tr><td class="embedded">
 {% /if %}

@@ -75,17 +75,76 @@ if ($Advertisement->enable_ad()){
 }
 $smarty->assign("enabledonation",$enabledonation);
 $smarty->assign("cur_user",$CURUSER);
-$smarty->assign("lang_function",array('text_login'=>$lang_functions['text_login'],'text_signupcard'=>$lang_functions['text_signupcard'],'text_signupcard'=>$lang_functions['text_signupcard'],'text_invite_reg'=>$lang_functions['text_invite_reg'],'text_signup'=>$lang_functions['text_signup']));
 $smarty->display(MTPTTEMPLATES."/header.html");
 exit;
-?>
-<?php if (!$CURUSER) { ?>
-			<a href="login.php"><font class="big"><b><?php echo $lang_functions['text_login'] ?></b></font></a>  ｜ <a href="signupcard.php"><font class="big"><b><?php echo $lang_functions['text_signupcard'] ?></b></font></a> ｜ <a href="signup.php?type=invite"><font class="big"><b><?php echo $lang_functions['text_invite_reg'] ?></b></font></a> ｜ <a href="signup.php"><font class="big"><b><?php echo $lang_functions['text_signup'] ?></b></font></a>  ｜ <a href="invitebox.php"><font class="big"><b>邀请申请区</b></font></a>
-<?php } 
+$smarty->assign("lang_functions",$lang_functions);
+if (!$CURUSER) {
+} 
 else {
-	begin_main_frame();
-	menu ();
-	end_main_frame();
+	$script_name = $_SERVER["SCRIPT_FILENAME"];
+	if (preg_match("/index/i", $script_name)) {
+		$selected = "home";
+	}elseif (preg_match("/forums/i", $script_name)) {
+		$selected = "forums";
+	}elseif (preg_match("/torrents/i", $script_name)) {
+		$selected = "torrents";
+	}elseif (preg_match("/music/i", $script_name)) {
+		$selected = "music";
+	}elseif (preg_match("/offers/i", $script_name) OR preg_match("/offcomment/i", $script_name)) {
+		$selected = "offers";
+	}elseif (preg_match("/upload/i", $script_name)) {
+		$selected = "upload";
+	}elseif (preg_match("/subtitles/i", $script_name)) {
+		$selected = "subtitles";
+	}elseif (preg_match("/usercp/i", $script_name)) {
+		$selected = "usercp";
+	}elseif (preg_match("/topten/i", $script_name)) {
+		$selected = "topten";
+	}elseif (preg_match("/log/i", $script_name)) {
+		$selected = "log";
+	}elseif (preg_match("/rules/i", $script_name)) {
+		$selected = "rules";
+	}elseif (preg_match("/faq/i", $script_name)) {
+		$selected = "faq";
+	}elseif (preg_match("/staff/i", $script_name)) {
+		$selected = "staff";
+	}elseif (preg_match("/signin/i", $script_name)) {
+		$selected = "signin";
+	}elseif (preg_match("/recycle/i", $script_name)) {
+		$selected = "recycle";
+	}
+	elseif(preg_match("/viewrequest/i", $script_name)){
+		$selected='viewrequest';
+	}
+	else
+		$selected = "";
+	print ("<div id=\"nav\"><ul id=\"mainmenu\" class=\"menu\">");
+	print ("<li" . ($selected == "home" ? " class=\"selected\"" : "") . "><a href=\"index.php\">" . $lang_functions['text_home'] . "</a></li>");
+	if ($enableextforum != 'yes')
+		print ("<li" . ($selected == "forums" ? " class=\"selected\"" : "") . "><a href=\"forums.php\">".$lang_functions['text_forums']."</a></li>");
+	else
+		print ("<li" . ($selected == "forums" ? " class=\"selected\"" : "") . "><a href=\"" . $extforumurl."\" target=\"_blank\">".$lang_functions['text_forums']."</a></li>");
+	print ("<li" . ($selected == "torrents" ? " class=\"selected\"" : "") . "><a href=\"torrents.php\">".$lang_functions['text_torrents']."</a></li>");
+	if ($enablespecial == 'yes')
+		print ("<li" . ($selected == "music" ? " class=\"selected\"" : "") . "><a href=\"music.php\">".$lang_functions['text_music']."</a></li>");
+	if ($enableoffer == 'yes')
+	print ("<li" . ($selected == "viewrequest" ? " class=\"selected\"" : "") . "><a href=\"viewrequest.php\">".$lang_functions['text_request']."</a></li>");
+	print ("<li" . ($selected == "upload" ? " class=\"selected\"" : "") . "><a href=\"upload.php\">".$lang_functions['text_upload']."</a></li>");
+	print ("<li" . ($selected == "subtitles" ? " class=\"selected\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
+	print ("<li" . ($selected == "recycle" ? " class=\"selected\"" : "") . "><a href=\"recycle.php\">候选区</a></li>");
+	print ("<li" . ($selected == "usercp" ? " class=\"selected\"" : "") . "><a href=\"usercp.php\">".$lang_functions['text_user_cp']."</a></li>");
+	print ("<li" . ($selected == "topten" ? " class=\"selected\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
+	print ("<li" . ($selected == "log" ? " class=\"selected\"" : "") . "><a href=\"log.php\">".$lang_functions['text_log']."</a></li>");
+	print ("<li" . ($selected == "rules" ? " class=\"selected\"" : "") . "><a href=\"rules.php\">".$lang_functions['text_rules']."</a></li>");
+	print ("<li" . ($selected == "faq" ? " class=\"selected\"" : "") . "><a href=\"faq.php\">".$lang_functions['text_faq']."</a></li>");
+	print ("<li" . ($selected == "staff" ? " class=\"selected\"" : "") . "><a href=\"staff.php\">".$lang_functions['text_staff']."</a></li>");
+	//print ("<li" . ($selected == "signin" ? " class=\"selected\"" : "") . "><a href=\"signin.php\">".$lang_functions['text_signin']."</a></li>");
+	print ("</ul></div>");
+	
+	if ($CURUSER){
+		if ($where_tweak == 'yes')
+			$USERUPDATESET[] = "page = ".sqlesc($selected);
+	}
 
 	$datum = getdate();
 	$datum["hours"] = sprintf("%02.0f", $datum["hours"]);

@@ -33,3 +33,5 @@ $smarty->compile_id="1.0.1";
 $smarty->force_compile=true;
 include($rootpath . 'include/core.php');
 include_once($rootpath . 'include/functions.php');
+include_once($rootpath . 'include/function_output.php');
+

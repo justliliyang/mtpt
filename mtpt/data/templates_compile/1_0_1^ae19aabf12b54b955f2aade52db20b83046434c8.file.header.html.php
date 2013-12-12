@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-12-04 13:05:54
+<?php /* Smarty version Smarty-3.1.13, created on 2013-12-11 13:36:41
          compiled from "E:\Apache\www\mtpt\templates\default\header.html" */ ?>
-<?php /*%%SmartyHeaderCode:10472529f28b2bd8cc3-08520468%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:203152a86a69b8ff84-30639317%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'ae19aabf12b54b955f2aade52db20b83046434c8' => 
     array (
       0 => 'E:\\Apache\\www\\mtpt\\templates\\default\\header.html',
-      1 => 1386162350,
+      1 => 1386164814,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '10472529f28b2bd8cc3-08520468',
+  'nocache_hash' => '203152a86a69b8ff84-30639317',
   'function' => 
   array (
   ),
@@ -38,9 +38,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   ),
   'has_nocache_code' => false,
   'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_529f28b2d17df0_95566132',
+  'unifunc' => 'content_52a86a69edbe57_00783539',
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_529f28b2d17df0_95566132')) {function content_529f28b2d17df0_95566132($_smarty_tpl) {?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php if ($_valid && !is_callable('content_52a86a69edbe57_00783539')) {function content_52a86a69edbe57_00783539($_smarty_tpl) {?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -86,48 +86,28 @@ DomTT.css<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
 <?php }?>
 <link rel="alternate" type="application/rss+xml" title="Latest Torrents" href="torrentrss.php" />
 <script type="text/javascript" src="curtain_imageresizer.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="ajaxbasic.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="common.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="domLib.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="domTT.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="domTT_drag.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="fadomatic.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="jquerylib/jquery-1.5.2.min.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="jquerylib/jquery.alerts.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="jquerylib/jquery.ui.draggable.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
+"></script>
 <script type="text/javascript" src="jquerylib/jquery.caretInsert.js<?php echo $_smarty_tpl->tpl_vars['cssupdatedate']->value;?>
->"></script>
-<link rel="stylesheet" href="userAutoTips.css" type="text/css">
-<script type="text/javascript" src="userAutoTips.js"></script>
-</head>
-<body>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
-	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
-	t_ids = $('textarea');
-	if(t_ids)
-	{
-		for(var i = 0 ;i <t_ids.length;i++)
-		{
-			userAutoTips({id:t_ids[i].id});
-		}	
-	}
-	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
-	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
-});
-
-</script>
+"></script>
+<link rel="stylesheet" href="userAutoTips.css" type="text/css" />
 <style type="text/css">
 html body {
 _background-image:url(about:blank);
@@ -158,6 +138,27 @@ _background-attachment:fixed;
     _top:expression(eval(document.documentElement.scrollTop));
     }
 </style>
+<script type="text/javascript" src="userAutoTips.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
+	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
+	t_ids = $('textarea');
+	if(t_ids)
+	{
+		for(var i = 0 ;i<t_ids.length;i++)
+		{
+			userAutoTips({id:t_ids[i].id});
+		}	
+	}
+	$('#roll_top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});
+	$('#roll_bottom').click(function(){$('html,body').animate({scrollTop:$('#footer').offset().top}, 800);});
+});
+</script>
+
+</head>
+<body>
+
 <div id="roll"><div title="回到顶部" id="roll_top"></div><div title="转到底部" id="roll_bottom"></div></div>
 <table class="head" cellspacing="0" cellpadding="0" align="center">
 	<tr>
@@ -197,5 +198,8 @@ _background-attachment:fixed;
 </b></font></a> ｜ <a href="signup.php?type=invite"><font class="big"><b><?php echo $_smarty_tpl->tpl_vars['lang_function']->value['text_invite_reg'];?>
 </b></font></a> ｜ <a href="signup.php"><font class="big"><b><?php echo $_smarty_tpl->tpl_vars['lang_function']->value['text_signup'];?>
 </b></font></a>  ｜ <a href="invitebox.php"><font class="big"><b>邀请申请区</b></font></a>
+<?php }else{ ?>
+<table class="main" width="100" border="0" cellspacing="0" cellpadding="0">
+	<tr><td class="embedded">
 <?php }?>
 <?php }} ?>

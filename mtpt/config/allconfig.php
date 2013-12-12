@@ -147,9 +147,9 @@ $AUTHORITY=array(	'defaultclass' => '1',
 $BASIC=array(	'SITENAME' => '麦田 PT',
 	'BASEURL' => 'localhost/mtpt',
 	'announce_url' => 'localhost/mtpt',
-	'mysql_host' => 'localhost',
+	'mysql_host' => 'db4free.net',
 	'mysql_user' => 'mtpt',
-	'mysql_pass' => 'mtpt',
+	'mysql_pass' => 'nwsuafmtpt',
 	'mysql_db' => 'mtpt',
 );
 $BONUS=array(	'donortimes' => '2',
