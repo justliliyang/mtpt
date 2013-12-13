@@ -89,3 +89,10 @@ function tr_small($x,$y,$noesc=0,$relation='') {
 	$smarty->display(FUNCTIONSMARTY.'/tr_small.html');
 }
 
+function quickreply($formname, $taname,$submit){
+	$smarty->assign("taname",$taname);
+	$smarty->assign("submit",$submit);
+	$smarty->assign(smile_row,smile_row($formname,$taname));
+	$content=$smarty->fetch(MTPTTEMPLATES.'/quickeply.html');
+	echo $content;
+}
