@@ -12,6 +12,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $rootpath);
 $rootpath .= "/";
 /*默认网站模板*/
 define('MTPTTEMPLATES',"default");
+/*默认函数页模版路径*/
+define('FUNCTIONSMARTY',"default/function_smarty");
 /*配置smarty模版*/
 require_once($rootpath."/include/smarty/libs/Smarty.class.php");
 $smarty=new Smarty();
