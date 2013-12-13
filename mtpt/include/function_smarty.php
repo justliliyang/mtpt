@@ -13,6 +13,7 @@ function stdmsg($heading, $text, $htmlstrip = false)
 }
 function begin_main_frame($caption = "", $center = false, $width = 100)
 {
+	global $smarty;
 	$tdextra = "";
 	if ($center)
 	$tdextra .= " align=\"center\"";
@@ -24,10 +25,12 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 }
 function end_main_frame()
 {
+	global $smarty;
 	$smarty->display(FUNCTIONSMARTY.'/end_main_frame.html');
 }
 function begin_frame($caption = "", $center = false, $padding = 10, $width="100%", $caption_center="left")
 {
+	global $smarty;
 	$tdextra = "";
 	if ($center)
 	$tdextra .= " align=\"center\"";
@@ -40,10 +43,12 @@ function begin_frame($caption = "", $center = false, $padding = 10, $width="100%
 }
 function end_frame()
 {
+	global $smarty;
 	$smarty->display(FUNCTIONSMARTY.'/end_frame.html');
 }
 function begin_table($fullwidth = false, $padding = 5)
 {
+	global $smarty;
 	$width = "";
 	if ($fullwidth)
 	$width .= " width=50%";
@@ -53,10 +58,12 @@ function begin_table($fullwidth = false, $padding = 5)
 }
 function end_table()
 {
+	global $smarty;
 	$smarty->display(FUNCTIONSMARTY.'/end_table.html');
 }
 
 function tr($x,$y,$noesc=0,$relation='') {
+	global $smarty;
 	if ($noesc)
 	$a = $y;
 	else {
@@ -69,6 +76,7 @@ function tr($x,$y,$noesc=0,$relation='') {
 	$smarty->display(FUNCTIONSMARTY.'/tr.html');
 }
 function tr_small($x,$y,$noesc=0,$relation='') {
+	global $smarty;
 	if ($noesc)
 	$a = $y;
 	else {
