@@ -5,8 +5,7 @@ dbconn();
 stdhead(PROJECTNAME);
 print ("<h1>".PROJECTNAME."</h1>");
 begin_main_frame();
-
-print("<h1 align=center><a href=http://code.google.com/p/mtpt/ target=_blank>MTPT</a>  modified from <a href=http://sourceforge.net/projects/nexusphp/ target=_blank>Nexusphp</a><br />By 鐙铏�鏄熸槦  from<a href=http://www.xnlinux.cn target=_blank> XNLUG</a></h1>");
+$smarty->display(MTPTTEMPLATES."/aboutmtpt.html");
 end_main_frame();
 stdfoot();  
 ?>
