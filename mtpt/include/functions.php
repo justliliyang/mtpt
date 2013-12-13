@@ -6,7 +6,7 @@ include_once($rootpath . 'include/globalfunctions.php');
 include_once($rootpath . 'include/config.php');
 include_once($rootpath . 'classes/class_advertisement.php');
 require_once($rootpath . get_langfile_path("functions.php"));
-
+include_once 'include/function_smarty.php';
 function get_langfolder_cookie()
 {
 	global $deflang;
@@ -472,7 +472,7 @@ function is_valid_id($id)
 	return is_numeric($id) && ($id > 0) && (floor($id) == $id);
 }
 
-
+/*
 //-------- Begins a main frame
 function begin_main_frame($caption = "", $center = false, $width = 100)
 {
@@ -522,7 +522,7 @@ function end_table()
 {
 	print("</table>\n");
 }
-
+*/
 //-------- Inserts a smilies frame
 //         (move to globals)
 
@@ -2077,7 +2077,7 @@ function mkglobal($vars) {
 	}
 	return 1;
 }
-
+/*  
 function tr($x,$y,$noesc=0,$relation='') {
 	if ($noesc)
 	$a = $y;
@@ -2097,7 +2097,7 @@ function tr_small($x,$y,$noesc=0,$relation='') {
 	}
 	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"1%\" class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$x."</td><td width=\"99%\" class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
 }
-
+*/
 function twotd($x,$y,$nosec=0){
 	if ($noesc)
 	$a = $y;
