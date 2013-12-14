@@ -1,6 +1,3 @@
-<tr 
-	{% if $relation  %}
-	relation =  "{% $relation %} "
-	{% /if %}
->
-	<td width=\"1%\" class=\"rowhead nowrap\" valign=\"top\" align=\"right\">{% $v %}</td><td width=\"99%\" class=\"rowfollow\" valign=\"top\" align=\"left\">{% $a %}</td></tr><br/>
+<tr {% if $relation  %}
+	relation =  "{% $relation %}"{% /if %}
+	><td width=\"1%\" class=\"rowhead nowrap\" valign=\"top\" align=\"right\">{% $v %}</td><td width=\"99%\" class=\"rowfollow\" valign=\"top\" align=\"left\">{% $a %}</td></tr><br/>
