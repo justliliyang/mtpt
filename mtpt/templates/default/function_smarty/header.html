@@ -141,18 +141,12 @@ $(document).ready(function(){
 	<li><a id=rules_tmp  href="rules.php">{% $lang_functions.text_rules %}</a></li>
 	<li><a id=faq_tmp  href="faq.php">{% $lang_functions.text_faq %}</a></li>
 	<li><a id=staff_tmp  href="staff.php">{% $lang_functions.text_staff %}</a></li>
-	</ul></div>
+	</ul>
 	<script>
 	var select="{% $select %}";
 	$("#"+select="_tmp").addClass("selected");
 	</script>
-	{% if $connect eq "yes" %}
-	<b><font color="green">{% $lang_functions.text_yes %}</font></b>
-	{% else if $connect eq "no" %}
-	<a href="faq.php#id21"><b><font color="red">{% $lang_functions.text_no %}</font></b></a>
-	{% else %}
-	{% $lang_functions.text_unknown %}
-	{% /if %}
+	</div>
 	
 	<table id="info_block" cellpadding="4" cellspacing="0" border="0" width="100%"><tr>
 	<td><table width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
@@ -174,29 +168,37 @@ $(document).ready(function(){
 	<font class = 'color_bonus'>{% $lang_functions.text_bonus %}</font>
     [<a href="mybonus.php">{% $lang_functions.text_use %}</a>丨<a href="usebonus.php">{% $lang_functions.text_app %}</a>]: {% $seedbonus %}
     <font class = 'color_invite'>{% $lang_functions.text_invite %}</font>
-    [<a href="invite.php?id={% $CURUSERID %}">{% $lang_functions.text_send %}</a>]: {% CURUSER_INVITES %}<br />
+    [<a href="invite.php?id={% $CURUSERID %}">{% $lang_functions.text_send %}</a>]: {% $CURUSER_INVITES %}<br />
 	<font class="color_ratio">{% $lang_functions.text_ratio %}</font> {% $ratio %} 
 	<font class='color_uploaded'>{% $lang_functions.text_uploaded %}</font> {% $CURUSER_UPLOADED %}
 	<font class='color_downloaded'> {% $lang_functions.text_downloaded %}</font> {% $CURUSER_DOWNLOADED %}
 	<font class='color_active'>{% $lang_functions.text_active_torrents %}</font> 
-	<a href="userdetails.php?id={% CURUSERID %}&show=seeding">
+	<a href="userdetails.php?id={% $CURUSERID %}&show=seeding">
 	<img class="uploading" alt="Torrents seeding" title="{% $lang_functions.title_torrents_seeding %}"  src="pic/trans.gif" />
 	{% $activeseed %}</a> 
-	<a href="userdetails.php?id={% CURUSERID %}&show=leeching">
+	<a href="userdetails.php?id={% $CURUSERID %}&show=leeching">
 	<img class="downloading" alt="Torrents leeching" title="{% $lang_functions.title_torrents_leeching %}" src="pic/trans.gif" />
 	{% $activeleech %}</a>
-	<a href="userdetails.php?id={% CURUSERID %}&show=completed" title="已完成">
+	<a href="userdetails.php?id={% $CURUSERID %}&show=completed" title="已完成">
 	<img class="completed" alt="completed" title="已完成"  src="pic/trans.gif" />--</a>
-	<a href="userdetails.php?id={% CURUSERID %}&show=uploaded" title="已发布">
+	<a href="userdetails.php?id={% $CURUSERID %}&show=uploaded" title="已发布">
 	<img class="uploaded" alt="uploaded" title="已发布"  src="pic/trans.gif" />--</a>
-	<font class='color_connectable'>{% $lang_functions.text_connectable %}</font>{% $connectable %}
+	<font class='color_connectable'>{% $lang_functions.text_connectable %}</font>
+   {% if $connect eq "yes" %}
+	<b><font color="green">{% $lang_functions.text_yes %}</font></b>
+	{% else if $connect eq "no" %}
+	<a href="faq.php#id21"><b><font color="red">{% $lang_functions.text_no %}</font></b></a>
+	{% else %}
+	{% $lang_functions.text_unknown %}
+	{% /if %}
+	
 	 </span></td>
 	<td class="bottom" align="right"><span class="medium">{% $lang_functions.text_the_time_is_now %}
 	{% $datum[hours] %}:{% $datum[minutes] %}<br />
 	{% if $userclass gt $staffmem_class %}
 	<a href="cheaterbox.php"><img class="cheaterbox" alt="cheaterbox" title="{% $lang_functions.title_cheaterbox %}" src="pic/trans.gif" /></a>
 	{% $totalcheaters %}
-	 <a href="reports.php"><img class="reportbox" alt="reportbox" title="{% $lang_functions.title_reportbox' %}" src="pic/trans.gif" />  </a>
+	 <a href="reports.php"><img class="reportbox" alt="reportbox" title="{% $lang_functions.title_reportbox %}" src="pic/trans.gif" />  </a>
      {% $totalreports %}
        <a href="staffbox.php"><img class="staffbox" alt="staffbox" title="{% $lang_functions.title_staffbox %}" src="pic/trans.gif" />  </a>
      {% $totalsm %}
@@ -217,19 +219,19 @@ $(document).ready(function(){
 </tr></table>
 </td></tr>
 <tr><td id="outer" align="center" class="outer" style="padding-top: 20px; padding-bottom: 20px">
-{% if $loginadd eq 'yes' %}
+{% if $loginadd eq "yes" %}
 {% if $Days eq 1 %}
 <script type="text/javascript">
-	jAlert('<font color=red>连续登录{% $salarynum %}天奖励，恭喜你获取了{% $addbonus %}点麦粒，继续保持哦</font>', '每日登录奖励');
+	jAlert("<font color=red>连续登录{% $salarynum %}天奖励，恭喜你获取了{% $addbonus %}点麦粒，继续保持哦</font>", "每日登录奖励");
 </script>
 {% else %}
 <script type="text/javascript">
-	jAlert('<font color=red>每日登录奖励，恭喜你获取了{% $addbonus %}点麦粒，连续多天登录会有更多奖励哦</font>', '每日登录奖励');
+	jAlert("<font color=red>每日登录奖励，恭喜你获取了{% $addbonus %}点麦粒，连续多天登录会有更多奖励哦</font>", "每日登录奖励");
 </script>
 {% /if %}
 {% /if %}
 {% if $offlinemsg ne false %}
-<p><table width="737" border="1" cellspacing="0" cellpadding="10"><tr><td style='padding: 10px; background: red' class="text" align="center">
+<p><table width="737" border="1" cellspacing="0" cellpadding="10"><tr><td style="padding: 10px; background: red" class="text" align="center">
 <font color="white">{% $lang_functions.text_website_offline_warning %}</font>
 </td></tr></table></p><br />
 {% /if %}

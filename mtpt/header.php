@@ -78,7 +78,7 @@ $smarty->assign("cur_user",$CURUSER);
 
 $smarty->assign("lang_functions",$lang_functions);
 if (!$CURUSER) {
-	$smarty->display(MTPTTEMPLATES."/header.html");	
+	$smarty->display(MTPTTEMPLATES."/function_smarty/header.html");	
 } 
 else {
 	$script_name = $_SERVER["SCRIPT_FILENAME"];
@@ -371,7 +371,7 @@ if ($msgalert)
 	}
 }
 $smarty->assign("offlinemsg",$offlinemsg);
-$smarty->display(MTPTTEMPLATES."/header.html");
+$smarty->display(MTPTTEMPLATES."/function_smarty/header.html");
 }
 
 
