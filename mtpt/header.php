@@ -75,10 +75,10 @@ if ($Advertisement->enable_ad()){
 }
 $smarty->assign("enabledonation",$enabledonation);
 $smarty->assign("cur_user",$CURUSER);
-$smarty->display(MTPTTEMPLATES."/header.html");
-exit;
+
 $smarty->assign("lang_functions",$lang_functions);
 if (!$CURUSER) {
+	$smarty->display(MTPTTEMPLATES."/header.html");	
 } 
 else {
 	$script_name = $_SERVER["SCRIPT_FILENAME"];
@@ -118,29 +118,11 @@ else {
 	}
 	else
 		$selected = "";
-	print ("<div id=\"nav\"><ul id=\"mainmenu\" class=\"menu\">");
-	print ("<li" . ($selected == "home" ? " class=\"selected\"" : "") . "><a href=\"index.php\">" . $lang_functions['text_home'] . "</a></li>");
-	if ($enableextforum != 'yes')
-		print ("<li" . ($selected == "forums" ? " class=\"selected\"" : "") . "><a href=\"forums.php\">".$lang_functions['text_forums']."</a></li>");
-	else
-		print ("<li" . ($selected == "forums" ? " class=\"selected\"" : "") . "><a href=\"" . $extforumurl."\" target=\"_blank\">".$lang_functions['text_forums']."</a></li>");
-	print ("<li" . ($selected == "torrents" ? " class=\"selected\"" : "") . "><a href=\"torrents.php\">".$lang_functions['text_torrents']."</a></li>");
-	if ($enablespecial == 'yes')
-		print ("<li" . ($selected == "music" ? " class=\"selected\"" : "") . "><a href=\"music.php\">".$lang_functions['text_music']."</a></li>");
-	if ($enableoffer == 'yes')
-	print ("<li" . ($selected == "viewrequest" ? " class=\"selected\"" : "") . "><a href=\"viewrequest.php\">".$lang_functions['text_request']."</a></li>");
-	print ("<li" . ($selected == "upload" ? " class=\"selected\"" : "") . "><a href=\"upload.php\">".$lang_functions['text_upload']."</a></li>");
-	print ("<li" . ($selected == "subtitles" ? " class=\"selected\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
-	print ("<li" . ($selected == "recycle" ? " class=\"selected\"" : "") . "><a href=\"recycle.php\">候选区</a></li>");
-	print ("<li" . ($selected == "usercp" ? " class=\"selected\"" : "") . "><a href=\"usercp.php\">".$lang_functions['text_user_cp']."</a></li>");
-	print ("<li" . ($selected == "topten" ? " class=\"selected\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
-	print ("<li" . ($selected == "log" ? " class=\"selected\"" : "") . "><a href=\"log.php\">".$lang_functions['text_log']."</a></li>");
-	print ("<li" . ($selected == "rules" ? " class=\"selected\"" : "") . "><a href=\"rules.php\">".$lang_functions['text_rules']."</a></li>");
-	print ("<li" . ($selected == "faq" ? " class=\"selected\"" : "") . "><a href=\"faq.php\">".$lang_functions['text_faq']."</a></li>");
-	print ("<li" . ($selected == "staff" ? " class=\"selected\"" : "") . "><a href=\"staff.php\">".$lang_functions['text_staff']."</a></li>");
-	//print ("<li" . ($selected == "signin" ? " class=\"selected\"" : "") . "><a href=\"signin.php\">".$lang_functions['text_signin']."</a></li>");
-	print ("</ul></div>");
-	
+$smarty->assign("select",$selected);
+$smarty->assign("enableextforum",$enableextforum);
+$smarty->assign("extforumurl",$extforumurl);
+$smarty->assign("enablespecial",$enablespecial);
+$smarty->assign("enableoffer",$enableoffer);
 	if ($CURUSER){
 		if ($where_tweak == 'yes')
 			$USERUPDATESET[] = "page = ".sqlesc($selected);
@@ -169,14 +151,7 @@ else {
 		else $connect = 'unknown';
 		$Cache->cache_value('user_'.$CURUSER["id"].'_connect', $connect, 900);
 	}
-
-	if($connect == "yes")
-		$connectable = "<b><font color=\"green\">".$lang_functions['text_yes']."</font></b>";
-	elseif ($connect == 'no')
-		$connectable = "<a href=\"faq.php#id21\"><b><font color=\"red\">".$lang_functions['text_no']."</font></b></a>";
-	else
-		$connectable = $lang_functions['text_unknown'];
-
+$smarty->assign("connect",$connect);
 	//// check every 60 seconds //////////////////
 	$activeseed = $Cache->get_value('user_'.$CURUSER["id"].'_active_seed_count');
 	if ($activeseed == ""){
@@ -194,36 +169,28 @@ else {
 		$Cache->cache_value('user_'.$CURUSER["id"].'_unread_message_count', $unread, 60);
 	}
 	
-	$inboxpic = "<img class=\"".($unread ? "inboxnew" : "inbox")."\" src=\"pic/trans.gif\" alt=\"inbox\" title=\"".($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages'])."\" />";
 if($connect == 'no'){
 	if(!$Cache->get_value('connectfaq_'.$CURUSER['id'])){
-/*
-?>
-<script type="text/javascript">
-	jAlert('<?=$lang_functions['text_connectfaq']?>');
-</script>
-<?
-*/
 	$Cache->cache_value('connectfaq_'.$CURUSER['id'],'1',60);
 	}
 }
-?>
-<table id="info_block" cellpadding="4" cellspacing="0" border="0" width="100%"><tr>
-	<td><table width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
-		<td class="bottom" align="left"><span class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <?php echo get_username($CURUSER['id'])?>  [<a href="logout.php"><?php echo $lang_functions['text_logout'] ?></a>]<?php if (get_user_class() == UC_UPLOADER) echo"[<a href='uploaders.php'>发布员考核</a>]";if (get_user_class() == UC_MODERATOR) echo"[<a href='moderators.php'>管理员考核</a>]";?> <?php if (get_user_class() >= UC_MODERATOR) { ?>[<a href="staffpanel.php"><?php echo $lang_functions['text_staff_panel'] ?></a>] <?php }?> <?php if (get_user_class() >= UC_SYSOP) { ?> [<a href="settings.php"><?php echo $lang_functions['text_site_settings'] ?></a>]<?php } ?> [<a href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0"><?php echo $lang_functions['text_bookmarks'] ?></a>] <font class = 'color_bonus'><?php echo $lang_functions['text_bonus'] ?></font>[<a href="mybonus.php"><?php echo $lang_functions['text_use'] ?></a>丨<a href="usebonus.php"><?=$lang_functions['text_app']?></a>]: <?php echo number_format((int)$CURUSER['seedbonus'], 0)?> <font class = 'color_invite'><?php echo $lang_functions['text_invite'] ?></font>[<a href="invite.php?id=<?php echo $CURUSER['id']?>"><?php echo $lang_functions['text_send'] ?></a>]: <?php echo $CURUSER['invites']?><br />
+$smarty->assign("username",get_username($CURUSER['id']));
+$smarty->assign("userclass",get_user_class());
+$smarty->assign("UC_UPLOADER",UC_UPLOADER);
+$smarty->assign("UC_MODERATOR",UC_MODERATOR);
+$smarty->assign("UC_SYSOP",UC_SYSOP);
+$smarty->assign("seedbonus",number_format((int)$CURUSER['seedbonus'], 0));
+$smarty->assign("CURUSERID",$CURUSER['id']);
+$smarty->assign("CURUSER_INVITES",$CURUSER['invites']);
+$smarty->assign("radio",$ratio);
+$smarty->assign("CURUSER_UPLOADED",mksize($CURUSER['uploaded']));
+$smarty->assign("CURUSER_DOWNLOADED",mksize($CURUSER['downloaded']));
+$smarty->assign("activeseed",$activeseed);
+$smarty->assign("activeleech",$activeleech);
+$smarty->assign("connectable",$connectable);
+$smarty->assign("datum",$datum);
+$smarty->assign("staffmem_class",$staffmem_class);
 
-	<font class="color_ratio"><?php echo $lang_functions['text_ratio'] ?></font> <?php echo $ratio?> 
-	<font class='color_uploaded'><?php echo $lang_functions['text_uploaded'] ?></font> <?php echo mksize($CURUSER['uploaded'])?>
-	<font class='color_downloaded'> <?php echo $lang_functions['text_downloaded'] ?></font> <?php echo mksize($CURUSER['downloaded'])?> 
-	<font class='color_active'><?php echo $lang_functions['text_active_torrents'] ?></font> <a href="userdetails.php?id=<?php echo $CURUSER['id'];?>&show=seeding"><img class="uploading" alt="Torrents seeding" title="<?php echo $lang_functions['title_torrents_seeding'] ?>"  src="pic/trans.gif" /><?php echo $activeseed?></a> 
-	<a href="userdetails.php?id=<?php echo $CURUSER['id'];?>&show=leeching"><img class="downloading" alt="Torrents leeching" title="<?php echo $lang_functions['title_torrents_leeching'] ?>" src="pic/trans.gif" /><?php echo $activeleech?></a>
-	<a href="userdetails.php?id=<?php echo $CURUSER['id'];?>&show=completed" title="已完成"><img class="completed" alt="completed" title="已完成"  src="pic/trans.gif" />--</a>
-	<a href="userdetails.php?id=<?php echo $CURUSER['id'];?>&show=uploaded" title="已发布"><img class="uploaded" alt="uploaded" title="已发布"  src="pic/trans.gif" />--</a>
-	<font class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable?> <?php //echo maxslots();?></span></td>
-
-	<td class="bottom" align="right"><span class="medium"><?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours].":".$datum[minutes]?><br />
-
-<?php
 	if (get_user_class() >= $staffmem_class){
 	$totalreports = $Cache->get_value('staff_report_count');
 	if ($totalreports == ""){
@@ -240,25 +207,18 @@ if($connect == 'no'){
 		$totalcheaters = get_row_count("cheaters");
 		$Cache->cache_value('staff_cheater_count', $totalcheaters, 900);
 	}
-	print("<a href=\"cheaterbox.php\"><img class=\"cheaterbox\" alt=\"cheaterbox\" title=\"".$lang_functions['title_cheaterbox']."\" src=\"pic/trans.gif\" />  </a>".$totalcheaters."  <a href=\"reports.php\"><img class=\"reportbox\" alt=\"reportbox\" title=\"".$lang_functions['title_reportbox']."\" src=\"pic/trans.gif\" />  </a>".$totalreports."  <a href=\"staffbox.php\"><img class=\"staffbox\" alt=\"staffbox\" title=\"".$lang_functions['title_staffbox']."\" src=\"pic/trans.gif\" />  </a>".$totalsm."  ");
+$smarty->assign("totalcheaters",$totalcheaters);
+$smarty->assign("totalreports",$totalreports);
+$smarty->assign("totalsm",$totalsm);
 	}
+$smarty->assign("unread",$unread);
+	$messages=$messages ? $messages." (".$unread.$lang_functions['text_message_new'].")" : "0";
+$smarty->assign("messages",$messages);
+$smarty->assign("outmessages",$outmessages ? $outmessages : "0");
 
-	print("<a href=\"messages.php\">".$inboxpic."</a> ".($messages ? $messages." (".$unread.$lang_functions['text_message_new'].")" : "0"));
-	print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><img class=\"sentbox\" alt=\"sentbox\" title=\"".$lang_functions['title_sentbox']."\" src=\"pic/trans.gif\" /></a> ".($outmessages ? $outmessages : "0"));
-	print(" <a href=\"friends.php\"><img class=\"buddylist\" alt=\"Buddylist\" title=\"".$lang_functions['title_buddylist']."\" src=\"pic/trans.gif\" /></a>");
-	print(" <a href=\"getrss.php\"><img class=\"rss\" alt=\"RSS\" title=\"".$lang_functions['title_get_rss']."\" src=\"pic/trans.gif\" /></a>");
-?>
-
-	</span></td>
-	</tr></table></td>
-</tr></table>
-
-</td></tr>
-
-<tr><td id="outer" align="center" class="outer" style="padding-top: 20px; padding-bottom: 20px">
-<?php
 //每日登陆奖励
 global $loginadd;require "./memcache.php";
+$smarty->assign("loginadd",$loginadd);
 if($loginadd == 'yes'){
 if($memcache){
 	if($memcache->get('continuelogin_'.$CURUSER['id'])!='1'){
@@ -277,23 +237,18 @@ if($Days == 1){
 	else
 	$addbonus = $salarynum + 4;
 	mysql_query("UPDATE users SET seedbonus=seedbonus+$addbonus , salary=now(), salarynum=salarynum + 1 WHERE id=".$CURUSER['id']);
-?>
-<script type="text/javascript">
-	jAlert('<font color=red>连续登录<?=$salarynum?>天奖励，恭喜你获取了<?=$addbonus?>点麦粒，继续保持哦</font>', '每日登录奖励');
-</script>
-<?
+	$smarty->assign("Days",$Days);
+	$smarty->assign("salarynum",$salarynum);
+	$smarty->assign("addbonus",$addbonus);
 }else if($Days > 0){
 	mysql_query("UPDATE users SET seedbonus=seedbonus+$addbonus , salary=now(), salarynum=1 WHERE id=".$CURUSER['id']);
-?>
-<script type="text/javascript">
-	jAlert('<font color=red>每日登录奖励，恭喜你获取了<?=$addbonus?>点麦粒，连续多天登录会有更多奖励哦</font>', '每日登录奖励');
-</script>
-<?
+	$smarty->assign("Days",$Days);
+	$smarty->assign("salarynum",$salarynum);
+	$smarty->assign("addbonus",$addbonus);
 		}
 	}
 	$memcache->set('continuelogin_'.$CURUSER['id'],'1',false,3600) or die ("");
 }}
-
 
 	if ($Advertisement->enable_ad()){
 			$belownavad=$Advertisement->get_ad('belownav');
@@ -415,10 +370,8 @@ if ($msgalert)
 		}
 	}
 }
-		if ($offlinemsg)
-		{
-			print("<p><table width=\"737\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
-			print("<font color=\"white\">".$lang_functions['text_website_offline_warning']."</font>");
-			print("</td></tr></table></p><br />\n");
-		}
+$smarty->assign("offlinemsg",$offlinemsg);
+$smarty->display(MTPTTEMPLATES."/header.html");
 }
+
+

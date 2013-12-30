@@ -1,8 +1,6 @@
 <?php
 require "include/bittorrent.php";
 require "./memcache.php";
-stdmsg("sss", "ss");
-exit;
 dbconn(true);
 require_once(get_langfile_path());
 loggedinorreturn(true);
@@ -37,7 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		stderr($lang_index['std_error'], $lang_index['std_option_unselected']);
 	}
 }
-
+require ('header.php');
+exit;
 stdhead($lang_index['head_home']);
 begin_main_frame();
 function ipv6ip($ip)
