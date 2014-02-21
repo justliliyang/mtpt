@@ -17,10 +17,10 @@ function bark($text = "")
 if ($iv == "yes")
 	check_code ($_POST['imagehash'], $_POST['imagestring'],'login.php',true);
 //判断登陆方式
-if ($_POST['loginmethod'] == 'username')
-$res = sql_query("SELECT id, passhash, secret, enabled, status FROM users WHERE username = " . sqlesc($username));
-if ($_POST['loginmethod'] == 'email')
-$res = sql_query("SELECT id, passhash, secret, enabled, status FROM users WHERE email = " . sqlesc($username));
+if (strpos($username,"@"))
+$res = sql_query("SELECT id, passhash, secret, enabled, status,class FROM users WHERE email = " . sqlesc($username));
+else
+$res = sql_query("SELECT id, passhash, secret, enabled, status,class FROM users WHERE username = " . sqlesc($username));
 
 $row = mysql_fetch_array($res);
 

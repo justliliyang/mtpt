@@ -205,6 +205,7 @@ function insert_compose_frame($id, $type = 'new')
 			if (mysql_num_rows($res) != 1)
 				stderr($lang_forums['std_error'], $lang_forums['std_no_post_id']);
 			$arr = mysql_fetch_assoc($res);
+			$arr["body"] = preg_replace('/\[(@)([^\]]*?)\]/','[b]@$2[/b]',$arr["body"]);
 			$body = "[quote=".htmlspecialchars($arr["username"])."]".htmlspecialchars(unesc($arr["body"]))."[/quote]";
 			$id = $topicid;
 			$type = 'quote';
@@ -571,7 +572,7 @@ if ($action == "viewtopic")
 	if (!$authorid)
 		$Cache->cache_value('topic_'.$topicid.'_post_count', $postcount, 3600);
 
-	//------ Make page menu
+	//------ Make page menu创建帖子内部pager
 
 	$pagerarr = array();
 
@@ -590,32 +591,32 @@ if ($action == "viewtopic")
 			break;
 			++$i;
 		}
-		$page = floor($i / $perpage);
+		$page = floor($i / $perpage)+1;
 	}
 	if ($page === "last"){
-	$page = $pages-1;
+	$page = $pages;
 	}
 	elseif(isset($page))
 	{
-		if($page < 0){
-		$page = 0;
+		if($page <= 1){
+		$page = 1;
 		}
-		elseif ($page > $pages - 1){
-		$page = $pages - 1;
+		elseif ($page > $pages){
+		$page = $pages ;
 		}
 	}
 	else {if ($CURUSER["clicktopic"] == "firstpage")
-		$page = 0;
-		else $page = $pages-1;
+		$page = 1;
+		else $page = $pages;
 	}
 
-	$offset = $page * $perpage;
+	$offset = (($page-1)<0?0:($page-1)) * $perpage;
 	$dotted = 0;
 	$dotspace = 3;
 	$dotend = $pages - $dotspace;
 	$curdotend = $page - $dotspace;
 	$curdotstart = $page + $dotspace;
-	for ($i = 0; $i < $pages; ++$i)
+	for ($i = 1; $i <= $pages; ++$i)
 	{
 		if (($i >= $dotspace && $i <= $curdotend) || ($i >= $curdotstart && $i < $dotend)) {
 				if (!$dotted)
@@ -624,22 +625,22 @@ if ($action == "viewtopic")
 				continue;
 		}
 		$dotted = 0;
-		if ($i != $page)
-		$pagerarr[] .= "<a href=\"".htmlspecialchars("?".$addparam."&page=".$i)."\"><b>".($i+1)."</b></a>\n";
+		if ($i != $page )
+		$pagerarr[] .= "<a class=\"paginate\" href=\"".htmlspecialchars("?".$addparam."&page=".$i)."\"><b>".$i."</b></a>\n";
 		else
-		$pagerarr[] .= "<font class=\"gray\"><b>".($i+1)."</b></font>\n";
+		$pagerarr[] .= "<font class=\"gray\"><b class=\"paginactive\">".$i."</b></font>\n";
 	}
-	if ($page == 0)
-	$pager = "<font class=\"gray\"><b>&lt;&lt;".$lang_forums['text_prev']."</b></font>";
+	if ($page <= 1)
+	$pager = "<font class=\"gray\"><b>&lt;&lt;上一页</b></font>";
 	else
-	$pager = "<a href=\"".htmlspecialchars("?".$addparam."&page=" . ($page - 1)) .
-	"\"><b>&lt;&lt;".$lang_forums['text_prev']."</b></a>";
+	$pager = "<a class=\"next\" href=\"".htmlspecialchars("?".$addparam."&page=" . ($page - 1)) .
+	"\"><b>&lt;&lt;上一页</b></a>";
 	$pager .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	if ($page == $pages-1)
-	$pager .= "<font class=\"gray\"><b>".$lang_forums['text_next']." &gt;&gt;</b></font>\n";
+	if ($page == $pages)
+	$pager .= "<font class=\"gray\"><b>下一页 &gt;&gt;</b></font>\n";
 	else
-	$pager .= "<a href=\"".htmlspecialchars("?".$addparam."&page=" . ($page + 1)) .
-	"\"><b>".$lang_forums['text_next']." &gt;&gt;</b></a>\n";
+	$pager .= "<a class=\"next\" href=\"".htmlspecialchars("?".$addparam."&page=" . ($page + 1)) .
+	"\"><b>下一页 &gt;&gt;</b></a>\n";
 
 	$pagerstr = join(" | ", $pagerarr);
 	$pagertop = "<p align=\"center\">".$pager."<br />".$pagerstr."</p>\n";
@@ -1189,7 +1190,7 @@ if ($action == "deletetopic")
 	}
 
 	$postcount = get_row_count("posts","WHERE topicid=".sqlesc($topicid));
-
+	$postbody = mysql_fetch_array(sql_query("select body FROM posts WHERE topicid=$topicid"));
 	sql_query("DELETE FROM topics WHERE id=$topicid") or sqlerr(__FILE__, __LINE__);
 	sql_query("DELETE FROM posts WHERE topicid=$topicid") or sqlerr(__FILE__, __LINE__);
 	sql_query("DELETE FROM readposts WHERE topicid=$topicid") or sqlerr(__FILE__, __LINE__);
@@ -1203,7 +1204,7 @@ if ($action == "deletetopic")
 	KPS("-",$starttopic_bonus,$userid);
 	//===end
 	//给主题发布者发站内信
-	sendMessage(0,$userid,"你发布的主题被删除了","你在[url=forums.php?action=viewforum&forumid=$forumid] 论坛 [/url]中发布的帖子 [b]". htmlspecialchars($subject)." [/b]被 管理员 [url=userdetails.php?id={$CURUSER[id]}] {$CURUSER[username]} [/url]删除了");
+	sendMessage(0,$userid,"你发布的主题被删除了","你在[url=forums.php?action=viewforum&forumid=$forumid] 论坛 [/url]中发布的帖子 [b]". htmlspecialchars($subject)." [/b]被 管理员 [url=userdetails.php?id={$CURUSER[id]}] {$CURUSER[username]} [/url]删除了[quote=帖子内容]".$postbody['body']."[/quote]");
 
 	write_log("管理员 $CURUSER[username] 删除了$userid 的帖子  $subject");
 
@@ -1461,7 +1462,7 @@ if ($action == "viewforum")
 						$dotted = 1;
 						continue;
 					}
-				$topicpages .= " <a href=\"".htmlspecialchars("?action=viewtopic&topicid=".$topicid."&page=".($i-1))."\">$i</a>";
+				$topicpages .= " <a href=\"".htmlspecialchars("?action=viewtopic&topicid=".$topicid."&page=".$i)."\">$i</a>";
 				}
 
 				$topicpages .= " ]";

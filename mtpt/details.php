@@ -603,7 +603,7 @@ if ($CURUSER['showcomment'] != 'no'){
 	{
 		print("<br /><br />");
 		print("<h1 align=\"center\" id=\"startcomments\">" .$lang_details['h1_user_comments'] . "</h1>\n");
-		list($pagertop, $pagerbottom, $limit) = pager(10, $count, "details.php?id=$id&cmtpage=1&", array(lastpagedefault => 1), "page");
+		list($pagertop, $pagerbottom, $limit) = pager(4, $count, "details.php?id=$id&cmtpage=1&", array(lastpagedefault => 1), "page");
 
 		$subres = sql_query("SELECT id, text, user, added, editedby, editdate FROM comments WHERE torrent = $id ORDER BY id $limit") or sqlerr(__FILE__, __LINE__);
 		$allrows = array();

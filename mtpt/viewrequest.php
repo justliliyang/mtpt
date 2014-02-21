@@ -409,9 +409,10 @@ function quick_reply_to(username)
 					sql_query ( "UPDATE users SET seedbonus = seedbonus - " . $amount . " WHERE id = " . $CURUSER [id] );
 					writeBonusComment($CURUSER [id],"使用$amount 麦粒新增了求种 " . mysql_insert_id (). sqlesc ( $_POST ["name"] ));
 					sql_query ( "INSERT req ( name , catid , introduce, ori_introduce ,amount , ori_amount , userid ,added, resetdate ) VALUES ( " . sqlesc ( $_POST ["name"] ) . " , " . sqlesc ( $_POST ["catid"] ) . " , " . sqlesc ( $_POST ["introduce"] ) . " , " . sqlesc ( $_POST ["introduce"] ) . " , " . sqlesc ( $_POST ["amount"] ) . " , " . sqlesc ( $_POST ["amount"] ) . " , " . sqlesc ( $CURUSER [id] ) . " , '" . date ( "Y-m-d H:i:s" ) . "', '" . date ( "Y-m-d H:i:s" ) . "' )" ) or sqlerr ( __FILE__, __LINE__ );
-					
-					write_log ( "求种：用户 $CURUSER[username] 新增了求种 " . mysql_insert_id (). sqlesc ( $_POST ["name"] ) );
-					stderr ( "成功", "新增求种成功，<a href=viewrequest.php>点击这里返回</a>", 0 );
+					$hisid = mysql_insert_id ();
+					write_log ( "求种：用户 $CURUSER[username] 新增了求种 " . $hisid. sqlesc ( $_POST ["name"] ) );
+					sendshoutbox("[@".$CURUSER['username']."]砸重金新增了求种，[url=viewrequest.php?action=view&id=" . $hisid."]".sqlesc ( $_POST ["name"] )."[/url]大家来帮帮他吧");
+					stderr ( "成功", "新增求种成功，<a href=viewrequest.php?action=view&id=$hisid>点击这里查看</a>", 0 );
 				} else
 					stderr ( "出错了！！！", "你没有该权限！！！<a href=viewrequest.php>点击这里返回</a>", 0 );
 				die ();
@@ -513,7 +514,9 @@ function quick_reply_to(username)
 				if ($amount > $CURUSER [seedbonus])
 					stderr ( "出错了！", "你没有那么多麦粒！" );
 				sql_query ( "UPDATE users SET seedbonus = seedbonus - " . $newseedbonus . " WHERE id = " . $CURUSER [id] );
-				writeBonusComment($CURUSER [id],"使用$newseedbonus 麦粒追加了悬赏". sqlesc ( $_POST ["reqid"] ));
+				$addbonusname = mysql_fetch_assoc(sql_query ( "SELECT name from req where id=". sqlesc ( $_POST ["reqid"] )) );
+				writeBonusComment($CURUSER ['id'],"使用$newseedbonus 麦粒追加了悬赏". sqlesc ( $addbonusname['name'] ).$_POST ["reqid"]);
+				sendshoutbox("[@".$CURUSER['username']."]砸重金追加悬赏，求种[url=viewrequest.php?action=view&id=" . $_POST ["reqid"]."]".$addbonusname['name']."[/url]大家来帮帮他吧");
 				sql_query ( "UPDATE req SET amount = " . $newamount . ", resetdate = '" . date ( "Y-m-d H:i:s" ) . "' WHERE id = " . sqlesc ( $_POST ["reqid"] ) );
 				if ($arr ["userid"] != $CURUSER ["id"]) {
 					$res = sql_query ( "SELECT * FROM givebonus WHERE bonusfromuserid = '" . $CURUSER ["id"] . "' AND bonustotorrentid =" . sqlesc ( $_POST ["reqid"] ) . " AND type='3'" );
@@ -526,6 +529,7 @@ function quick_reply_to(username)
 						sql_query ( "UPDATE givebonus SET bonus = '" . $amount . "' WHERE bonusfromuserid = '" . $CURUSER ["id"] . "' AND bonustotorrentid =" . sqlesc ( $_POST ["reqid"] ) . " AND type='3'" );
 					}
 				}
+				
 				stderr ( "成功", "追加悬赏成功，<a href=viewrequest.php?action=view&id=" . $_POST ["reqid"] . ">点击这里返回</a>", false );
 				die ();
 				break;

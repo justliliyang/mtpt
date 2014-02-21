@@ -100,12 +100,10 @@ elseif ($_POST['invite']){
 	}
 }
 }
-	$url = "viewinvitebox.php?";
-	$count = get_row_count("invitebox");
-	$perpage = 10;
-	list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, $url);
+	
 ?>
 <h1>邀请申请区</h1>
+<h1><a href=viewinvitebox.php>查看未处理</a>++++++++<a href=viewinvitebox.php?view=all>查看全部</a></h1>
 <br/><h2>说明：</h2><table width="100%"><tbody><tr><td class="text" valign="top"><div style="margin-left: 16pt;">1.点击右面的复选框，勾选要处理的申请；<br/>2.“设为已处理”将忽略此申请；“邀请”将向该申请邮箱发送邀请码（不会占用你的邀请名额）；尽量不要一次勾选多个申请同时邀请，以免其中一个邮箱有问题而影响其他邮箱。<br/>3.请认真审核，仔细处理。优先考虑网络、硬盘条件较好以及经验丰富的用户加入。<br/></div></td></tr></tbody></table>
 <table border="1" cellspacing="0" cellpadding="5" align="center" width="1100"><tbody><tr>
 <form method=post action=viewinvitebox.php>
@@ -123,21 +121,39 @@ elseif ($_POST['invite']){
 <td class="colhead" align="center"> 行为 </td>
 </tr>
 <?php
-$res=sql_query("SELECT * FROM invitebox ORDER BY id desc $limit");
+$url = "viewinvitebox.php?";
+	$count = get_row_count("invitebox");
+	$perpage = 10;
+	
+	
+
+if ($_GET['view'] == 'all')
+	{
+	$where = "";
+	$url = "viewinvitebox.php?view=all&";
+	$count = get_row_count("invitebox");
+	$perpage = 10;}
+else {
+	$where = " where dealt_by='no' ";
+	$perpage = 1;
+	$count = get_row_count("invitebox","where dealt_by='no'");
+	}
+list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, $url);
+$res = sql_query("SELECT * FROM invitebox $where ORDER BY id desc $limit");
 while($row=mysql_fetch_assoc($res))
 {
 	$Id=$row[Id];
-	$ip="<a href='ipsearch.php?ip=".$row[ip]."' target='_blank' class='faqlink'>$row[ip]</a>".school_ip_location($row[ip]);
-	$username=$row[username];
-	$email=$row[email];
-	$school=$row[school];
-	$grade=$row[grade];
-	$web=$row[web];
-	$disk=$row[disk];
-	$self_introduction=$row[self_introduction];
-	$added=$row[added];
-	$pic=$row[pic];
-	$dealt_by=$row[dealt_by];
+	$ip="<a href='ipsearch.php?ip=".$row['ip']."' target='_blank' class='faqlink'>$row[ip]</a>".school_ip_location($row['ip']);
+	$username=$row['username'];
+	$email=$row['email'];
+	$school=$row['school'];
+	$grade=$row['grade'];
+	$web=$row['web'];
+	$disk=$row['disk'];
+	$self_introduction=$row['self_introduction'];
+	$added=$row['added'];
+	$pic=$row['pic'];
+	$dealt_by=$row['dealt_by'];
 print("<tr>
 	<td class=\"rowfollow\" align=\"center\">$username</td>
 	<td class=\"rowfollow\">$ip</td>
@@ -149,17 +165,61 @@ print("<tr>
 	<td class=\"rowfollow\">$self_introduction</td>
 	<td class=\"rowfollow\">$added</td>");
 	if($pic)
-	print "<td class=\"rowfollow\"><a class=faqlink href=$pic target=_blank>点此查看</a></td>";
-	else print "<td class=\"rowfollow\"></td>";
+		print "<td class=\"rowfollow\"><a class=faqlink href=$pic target=_blank>点此查看</a></td>";
+	else 
+		print "<td class=\"rowfollow\"></td>";
 	print "<td class=\"rowfollow\">$dealt_by</td>
-	<td class=\"rowfollow\"><input type=\"checkbox\" name=\"invitebox[]\" value=\"$Id\"></td>
+	<td class=\"rowfollow\"><input type=\"checkbox\" name=\"invitebox[]\" checked=\"checked\" value=\"$Id\"></td>
 	</tr>";
+	if ($_GET['view'] == 'all') continue;
+	print("<tr>
+	<td class=\"rowfollow\" align=\"center\"></td>
+	<td class=\"rowfollow\">");
+	$suggestlvl = 0;
+
+	if (school_ip_location($row['ip'],0) == "西北农林科技大学")
+		$suggestlvl -=5;
+	$resip = sql_query("select count(*) from iplog where ip=".sqlesc($row['ip'])) or sqlerr(__LINE__,__FILE__);
+	$rowip = mysql_fetch_array($resip);
+	$countip=$rowip[0];
+	$resemail = sql_query("select count(*) from users where email=".sqlesc($email)) or sqlerr(__LINE__,__FILE__);
+	$rowemail = mysql_fetch_array($resemail);
+	$countemail=$rowemail[0];
+	if ($countip >=3){
+		echo "<font color='red'><b>重复ip，请点ip进行查询</b></font>";
+		$suggestlvl -= $countip;}
+	elseif ($countip >=1){
+		echo "<font color='red'><b>疑似重复ip，请点ip进行查询</b></font>";
+		$suggestlvl -= $countip;}
+	else
+		echo "<font color='green'><b>没有检测到重复ip</b></font>";
+	echo "</td><td class=\"rowfollow\">";
+	
+	if ($countemail>=1){
+		echo "<font color='red'><b>此用户已注册</b></font>";
+		$suggestlvl -= 5;}
+	else echo "<font color='green'><b>邮箱应该可以注册</b></font>";
+	echo "</td><td class=\"rowfollow\">";
+	if (sqlesc($school) == sqlesc(school_ip_location($row['ip'],0)))
+		echo "<font color='green'><b>完全一致</b></font>".sqlesc(school_ip_location($row['ip'],0))."---".$school;
+	else {
+		echo "<font color='red'><b>不一致</b></font>".sqlesc(school_ip_location($row['ip'],0))."---".$school;
+		$suggestlvl -=1;}
+	if ($suggestlvl>=0)
+	$suggest = "<font color='green'><b>建议发送邀请码，等级$suggestlvl</b></font>";
+	elseif($suggestlvl< (-3))
+	$suggest = "<font color='red'><b>请勿发送邀请码，等级$suggestlvl</b></font>";
+	else
+	$suggest = "<font color='orange'><b>不建议发送邀请码，等级$suggestlvl</b></font>";
+	echo "</td><td class=\"rowfollow\" align=\"right\"></td><td class=\"rowfollow\" align=\"right\"></td></tr>";
+	
 }
 ?>
-<tr><td class="colhead"><input class="btn" type="button" value="全选" onclick="this.value=check(form,'全选','全不选')"></td><td class="colhead" colspan="12" align="right"><input type="submit" name="setdealt" value="忽略此申请" /><input type="submit" name="invite" value="邀请" /><input type="submit" name="delete" value="删除" /></td></tr> 
+<tr><td class="colhead"><input class="btn" type="button" value="全选" onclick="this.value=check(form,'全选','全不选')"></td><td class="colhead" colspan="12" align="right"><? echo $suggest;?><input type="submit" name="setdealt" value="忽略此申请" /><input type="submit" name="invite" value="邀请" /><input type="submit" name="delete" value="删除" /></td></tr> 
 </form>
 <?
 print "</table>";
 echo $pagerbottom;
+
 stdfoot();
 ?>

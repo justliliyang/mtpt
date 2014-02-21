@@ -68,14 +68,15 @@ if ($action == "add")
 		if($username[1][$i] != "" && $username[1][$i] != $CURUSER['username']){
 			$postuserid = get_user_id_from_name($username[1][$i]);
 		if($postuserid != $arrpost[0]){
-		$postmsg = "有用户在种子[url=details.php\?id=$parent_id\&cmtpage=1\#cid$postid]{$arrpost[1]}[/url]中引用了你的评论";
+		$postmsg = "有用户在种子[url=details.php\?id=$parent_id\&cmtpage=1&$page
+		"."cid$postid=#cid$postid\#cid$postid]{$arrpost[1]}[/url]中引用了你的评论";
 		sql_query("INSERT INTO messages (sender, receiver, added, subject, msg, unread, location, saved,goto) VALUES ('0', ".$postuserid.", now(), '种子中有人引用您的回复','".$postmsg."','yes','1','no',1) ") or sqlerr(__FILE__, __LINE__);
 		}
 		}
 		}
 		}
 		//引用回复提醒结束，@提醒
-		$titles = "[url=details.php?id=$parent_id&cmtpage=1#cid$postid]{$arrpost[1]} [/url]";
+		$titles = "[url=details.php?id=$parent_id&cmtpage=1&page="."cid$postid#cid$postid]{$arrpost[1]} [/url]";
 		at_user_message($text,$titles,'');
 		//@jieshu
 			$Cache->delete_value('torrent_'.$parent_id.'_last_comment_content');
@@ -98,14 +99,16 @@ if ($action == "add")
 		if($username[1][$i] != "" && $username[1][$i] != $CURUSER['username']){
 			$postuserid = get_user_id_from_name($username[1][$i]);
 		if($postuserid != $arrpost[0]){
-		$postmsg = "有用户在求种[url=viewrequest.php?action=view&id=$parent_id&cmtpage=1#cid$postid]{$arrpost[1]}[/url]中引用了你的回复";
+		$postmsg = "有用户在求种[url=viewrequest.php?action=view&id=$parent_id&cmtpage=1&$page
+		"."cid$postid=#cid$postid]{$arrpost[1]}[/url]中引用了你的回复";
 		sql_query("INSERT INTO messages (sender, receiver, added, subject, msg, unread, location, saved,goto) VALUES ('0', ".$postuserid.", now(), '求种中有人引用您的回复','".$postmsg."','yes','1','no',1) ") or sqlerr(__FILE__, __LINE__);
 		}
 		}
 		}
 		}
 		//引用回复提醒结束，@提醒
-		$titles = "[url=viewrequest.php?action=view&id=$parent_id&cmtpage=1#cid$postid]". sqlesc($arrpost[1])."[/url]";
+		$titles = "[url=viewrequest.php?action=view&id=$parent_id&cmtpage=1&$page
+		"."cid$postid=#cid$postid#cid$postid]". sqlesc($arrpost[1])."[/url]";
 		at_user_message($text,$titles,'topic');
 		//@jieshu
 			}
@@ -144,11 +147,11 @@ if ($action == "add")
 		sql_query("UPDATE users SET last_comment = NOW() WHERE id = ".sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 
 		if($type == "torrent")
-			header("Refresh: 0; url=details.php?id=$parent_id#cid$postid");
+			header("Refresh: 0; url=details.php?id=$parent_id&page=cid$postid#cid$postid");
 		else if($type == "offer")
-			header("Refresh: 0; url=offers.php?id=$parent_id&off_details=1#cid$postid");
+			header("Refresh: 0; url=offers.php?id=$parent_id&off_details=1&page=cid$postid#cid$postid");
 		else if($type == "request")
-			header("Refresh: 0; url=viewrequest.php?action=view&id=$parent_id#cid$postid");
+			header("Refresh: 0; url=viewrequest.php?action=view&id=$parent_id&page=cid$postid#cid$postid");
 		die;
 	}
 
@@ -189,6 +192,7 @@ if ($action == "add")
 	$title = $lang_comment['text_add_comment_to']."<a href=$url>". htmlspecialchars($arr["name"]) . "</a>";
 	print("<form id=compose method=post name=\"compose\" action=\"comment.php?action=add&type=$type\">\n");
 	print("<input type=\"hidden\" name=\"pid\" value=\"$parent_id\"/>\n");
+	$arr2["text"] = preg_replace('/\[(@)([^\]]*?)\]/','[b]@$2[/b]',$arr2["text"]);
 	begin_compose($title, ($sub == "quote" ? "quote" : "reply"), ($sub == "quote" ? htmlspecialchars("[quote=".htmlspecialchars($arr2["username"])."]".unesc($arr2["text"])."[/quote]") : ""), false);
 	end_compose();
 	print("</form>");
@@ -274,17 +278,18 @@ elseif ($action == "delete")
 
 
 		if($type == "torrent")
-		$res = sql_query("SELECT torrent as pid,user FROM comments WHERE id=$commentid")  or sqlerr(__FILE__,__LINE__);
+		$res = sql_query("SELECT torrent as pid,user,text FROM comments WHERE id=$commentid")  or sqlerr(__FILE__,__LINE__);
 		else if($type == "offer")
-		$res = sql_query("SELECT offer as pid,user FROM comments WHERE id=$commentid")  or sqlerr(__FILE__,__LINE__);
+		$res = sql_query("SELECT offer as pid,user,text FROM comments WHERE id=$commentid")  or sqlerr(__FILE__,__LINE__);
 		else if($type == "request")
-		$res = sql_query("SELECT request as pid,user FROM comments WHERE id=$commentid")  or sqlerr(__FILE__,__LINE__);
+		$res = sql_query("SELECT request as pid,user,text FROM comments WHERE id=$commentid")  or sqlerr(__FILE__,__LINE__);
 
 		$arr = mysql_fetch_array($res);
 		if ($arr)
 		{
 			$parent_id = $arr["pid"];
 			$userpostid = $arr["user"];
+			$text = $arr["text"];
 		}
 		else
 		stderr($lang_comment['std_error'], $lang_comment['std_invalid_id']);
@@ -305,7 +310,9 @@ elseif ($action == "delete")
 		}
 
 		KPS("-",$addcomment_bonus,$userpostid);
+		sendMessage(0,$userpostid,"你发表的评论被删除了","你对[url=details.php?id=$parent_id] 这个种子 [/url]发表的评论 [quote]". htmlspecialchars($text)." [/quote]被 管理员 [url=userdetails.php?id={$CURUSER[id]}] {$CURUSER[username]} [/url]删除了");
 
+		write_log("管理员 $CURUSER[username] 删除了$userpostid 对 $parent_id 的一条评论");
 		$returnto = $_GET["returnto"] ? $_GET["returnto"] : htmlspecialchars($_SERVER["HTTP_REFERER"]);
 
 		header("Location: $returnto");

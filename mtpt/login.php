@@ -16,7 +16,7 @@ require_once(get_langfile_path("", false, $CURLANGDIR));
 
 failedloginscheck ();
 cur_user_check () ;
-stdhead($lang_login['head_login']);
+
 
 unset($returnto);
 if (!empty($_GET["returnto"])) {
@@ -29,8 +29,12 @@ if (!empty($_GET["returnto"])) {
 
 //show_image_code ();
 
-
-
+//stdhead($lang_login['head_login']);
+$select = 'login';
+$smarty->assign("select",$select);
+$smarty->assign("show",'no');
+$signuplist = $smarty->fetch(MTPTTEMPLATES.'/signuplist.html');
+$smarty->assign("signuplist",$signuplist);
 
 $smarty->assign("returnto",$returnto);
 $smarty->assign("showhelpbox_main",$showhelpbox_main);
