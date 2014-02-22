@@ -1,0 +1,77 @@
+<form method="post" action="takelogin.php">
+<table border="0" cellpadding="5">
+<tr><td class="rowhead">
+<select name="loginmethod">
+<option value="username" selected="selected">用户名</option>
+<option value="email">注册邮箱</option>
+</select >
+</td><td class="rowfollow" align="left"><input type="text" name="username" style="width: 180px; border: 1px solid gray" /></td></tr>
+<tr><td class="rowhead">密码</td><td class="rowfollow" align="left"><input type="password" name="password" style="width: 180px; border: 1px solid gray"/></td></tr>
+<tr><td class="rowhead">登陆期限</td><td class="rowfollow" align="left">
+<select name="dutime">
+<option value="day" >一天内自动登陆</option>
+<option value="week" selected="selected">一周内自动登陆</option>
+<option value="month">一月内自动登陆</option>
+</select>
+</td></tr>
+
+<tr><td class="toolbox" colspan="2" align="center">
+<input type="submit" value="登陆" class="btn" /> <input type="reset" value="重置" class="btn" />
+{% if $smtptype != 'none' %}
+</td></tr>
+<tr><td class="toolbox" colspan="2" align="center">
+<p>找回密码 &nbsp&nbsp&nbsp通过一卡通找回密码 &nbsp  &nbsp 查看封禁账号</p><a href="confirm_resend.php">重新发送验证邮箱（24h内邮箱验证未通过时使用）</a><br/><br/>
+<a href="/autofaq" target="_blank"><b style="color:red">有问题先问一下麦萌萌</b></a>
+<p>新手QQ群：145543216</p><a target="_blank" href="http://wp.qq.com/wpa/qunwpa?idkey=e4a93409574f25aa6e1a29a917ff4b3c97b5db948915d09fbcc073aeb8233bad"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="麦田PT新人注册指导" title="麦田PT新人注册指导"></a>
+</td></tr>
+</table>
+<p></p>
+{% if $returnto !='' %}
+<input type="hidden" name="returnto" value="{% $returnto %}  "/>
+{% /if %}
+</form>
+{% /if %}<!-- 
+{% if $showhelpbox_main != 'no' %}
+<table width="700" class="main" border="0" cellspacing="0" cellpadding="0"><tr><td class="embedded">
+<h2>求助区<font class="small"> -             需要邀请码请到<a href="invitebox.php"target='_blank'><font class="big" color='red'><b>邀请申请区</b></a><font id= "waittime" color="red"></font></h2>
+<table width='100%' border='1' cellspacing='0' cellpadding='1'><tr><td class= "text ">
+{% if $enable_ad != 0 %}
+<div id="ad_shoutindex ">{% $shout_ad[0] %}</div>
+{% /if %}
+<script type="text/javascript">
+	var shoutbox_value = 0;
+	setInterval(check_shoutbox_new,2000);
+        function check_shoutbox_new()
+        {
+                $.get("shoutbox_new.html",function(result){
+			var value = parseInt(result);
+			if((shoutbox_value < value && shoutbox_value > 0) || value == 0){
+				$("[name=sbox]").attr("src",$("[name=sbox]").attr("src"));
+			}
+			shoutbox_value = value;
+		});
+        }
+</script>
+<iframe src='{% $prefix %}{% $BASEURL %}/shoutbox.php?type=helpbox' width='650' height='180' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />
+<form action='{% $prefix %}{% $BASEURL %}/shoutbox.php' id='helpbox' method='get' target='sbox' name='shbox'>
+
+<input type='text' id="hbtext " name='shbox_text' autocomplete='off' style='width: 500px; border: 1px solid gray' ><input type='submit' id='hbsubmit' class='btn' name='shout' value= "发送" /><input type='reset' class='btn' value="清空" /> <input type='hidden' name='sent' value='yes'><input type='hidden' name='type' value='helpbox' />
+<div id=sbword style= "display: none ">发送</div>
+{% $smile_row %}
+</form></td></tr></table></td></tr></table>
+{% /if %} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
